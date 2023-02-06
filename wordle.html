@@ -1,0 +1,81 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="wordle-style.css">  
+    <script src="https://kit.fontawesome.com/229e193da5.js" crossorigin="anonymous"></script>
+    <title>Wordle by Colin</title>
+</head>
+<body>
+<!--
+    inside the big box:
+    1. toolbar
+        1a. far left: Wordle (in bold)
+        1b. help (question mark icon)
+            1ba. clicking button displays panel about how to play
+        1c. settings? (gear icon) 
+    2. game board
+        2a. 6x5 board of empty panels
+    3. text box
+    4. input
+-->
+    <div class="navbar">
+        <a href="mailto:colinrualo@gmail.com"><i class="fa fa-fw fa-envelope"></i></a>
+        <a href="#"><i class="fa-solid fa-gear"></i> </a>
+        <button class="btn" id="helpModal"><i class="fa-solid fa-circle-question"></i></button>
+        <p id="Wordle">Wordle</p>
+    </div>
+
+    <div id="myModal" class="modal">
+      
+        <h1>How to Play</h1>
+        <h2>Guess the Wordle in 6 tries.</h2>
+        <section>
+          <li>Each guess must be a valid 5-letter word.</li>
+          <li>The color of the tiles will change to show how close your guess was from the word.</li>
+
+        </section>
+        <p></p>
+        Have feedback? Email me at <a href="mailto:colinrualo@gmail.com">colinrualo@gmail.com</a>
+      
+
+      <script>
+        document.getElementById("helpModal").
+        addEventListener("click", function(){
+          document.getElementById("myModal").classList.toggle("show");
+        });
+      </script>
+    
+    </div>
+
+    <div class="grid-container">
+          <input type="text" id="text-box" name="user-input"
+          minlength="5" maxlength="5" pattern="[a-zA-Z]{5}" autocomplete="off"><br>
+
+          <input type="button" id="submit-button" value="Submit">
+
+    </div>
+
+    <div id="game-board"></div>
+
+    <div id="endModal" class="modal">
+
+      <h1>Game Over</h1>
+      <h2 id="correct-answer"></h2>
+
+      <button class="btn" id="playAgain">Play Again</button>
+
+      <script>
+        document.getElementById("playAgain").
+        addEventListener("click", function(){
+          //clearBoard();
+          document.getElementById("endModal").style.display = "none";
+        });
+      </script>
+    
+    </div>
+
+<script src="Wordle1.js" type="module"></script>
+
+</body>
+</html>
