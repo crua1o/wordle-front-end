@@ -18,56 +18,7 @@ body {
     color: black;
   }
 
-
-
-  /* Style buttons */
-.navbar button {
-    float: left;
-    border: none;
-    color: black;
-    background-color: white;
-    padding: 12px; /* Some padding */
-    padding-top: 16px;
-    cursor: pointer; /* Mouse pointer on hover */
-  }
-
   
-
-#Wordle {
-  color: black;
-  font-size: 25px;
-  font-weight: bold;
-  font-family: 'Courier New', Courier, monospace;
-  padding: 11px;
-}
-  
-
-/* Style the modal window */
-.modal{
-  display: none;
-  z-index: 1;
-  width: 300px;    
-  height: 400px;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-
-  position: absolute;
-  overflow: auto;
-  background-color: #747474;
-  color: white;
-  font-family: 'Courier New', Courier, monospace;
-  margin: 15% auto;
-  padding: 20px;
-  text-align: left;
-
-  /* curve edges slightly */
-  border-radius: 5px;
-}
-
-.show {
-  display: block;
-}
 
 .grid-container {
   /* centering contents */
@@ -101,7 +52,7 @@ body {
   padding: 5px;
   font-size: 1.25rem;
   font-weight: 700;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: 'Clear Sans', 'Helvetica Neue', Arial, sans-serif;
   text-transform: uppercase;
   background-color: #4CAF50;
   color: white;
@@ -141,37 +92,24 @@ body {
   display: flex;
 }
 
+/* flipping card animation */
 .flipped{
   transform: rotateY(180deg);
   transition: transform 0.5s;
 }
 
-#endModal {
-  /* center h1 and h2 */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  /* curve edges slightly */
-  border-radius: 5px;
-
-  /* position modal higher up on the screen */
-  z-index: 1;
-  top: 50%;
-  transform: translate(-50%, -50%);
+/* used to move letter bank to bottom */
+.bottom-div {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #f0f0f0;
+  padding: 10px;
+  text-align: center;
 }
 
-#playAgain {
-  margin: 10px;
-  padding: 5px;
-  font-size: 1.25rem;
-  font-weight: 700;
-  font-family: 'Courier New', Courier, monospace;
-  text-transform: uppercase;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 3px;
-  cursor: pointer;
+/* used for letters already used */
+.crossed-out {
+  text-decoration: line-through;
 }

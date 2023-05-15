@@ -1,8 +1,10 @@
-
 const NUMBER_OF_GUESSES = 6;
 let guessesRemaining = NUMBER_OF_GUESSES; // number of guesses remaining
 let rightGuessString = "";
 let words = [];
+const letterBank = document.getElementById('letterBank');
+const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+
 
 fetch('wordle-words.txt')
   .then(response => response.text())
@@ -16,6 +18,7 @@ fetch('wordle-words.txt')
 
 window.onload = function(){
     initBoard();
+    generateLetterBank();
 }
 
 
@@ -38,17 +41,59 @@ function initBoard(){
     }
 }
 
+// create letter icons
+function generateLetterBank() {
+    // Clear existing content
+    letterBank.innerHTML = '';
+  
+    // Generate letter icons
+    letters.forEach((letter) => {
+      const letterButton = document.createElement('ul');
+      letterButton.className = 'btn btn-sm';
+      letterButton.id = letter;
+      letterButton.textContent = letter;
+      letterBank.appendChild(letterButton);
+    });
+  }
+
+// validate only letters
 function validChars(){
     let input = document.getElementById('text-box').value;
     let regex = new RegExp("[a-zA-Z]");
     return regex.test(input);
 }
 
+// check if word in word bank
 function validWord(){
     let input = document.getElementById('text-box').value;
     // check if input is contained in the word list
     if (words.includes(input)) return true;
     else return false;
+}
+
+function handle_endmodal(){
+    // toggle the modal
+    $('#endModal').modal('show');
+
+    // display the correct word
+    document.getElementById("correct-answer").textContent = 
+    "The correct word was " + rightGuessString + ".";
+}
+
+// assign color of box by comparing input letter and correct letter
+function assign_color(letter, correct_letter){
+    let letterColor = '' // color of box
+    // change box color accordingly
+    if (letter === correct_letter) {
+        letterColor = 'lightgreen';
+    }
+    else if (letter !== correct_letter && rightGuessString.includes(letter)) {
+        letterColor = 'yellow';
+    }
+    else {
+        letterColor = 'lightgrey';
+    }
+    return letterColor;
 }
 
 function checkGuess(word){
@@ -59,12 +104,12 @@ function checkGuess(word){
     console.log(guessesRemaining);
     let row = document.getElementsByClassName("letter-row")[6 - guessesRemaining]
     
-
+    // fill in the boxes 
     for(let i = 0; i < input_arr.length; i++){
         let box = row.children[i] // box to shade
         let letter = word[i] // letter to add to box
         let letterColor = '' // color of box
-        console.log(input_arr[i]);
+        const letterBank = document.getElementById('letterBank');
 
         // set row[box[i]] to input_arr[i]
         box.textContent = letter.toUpperCase();
@@ -73,46 +118,32 @@ function checkGuess(word){
         box.classList.add('filled-box');
 
         // change box color accordingly
-        if (letter === rightGuessString[i]) {
-            letterColor = 'lightgreen';
-        }
+        letterColor = assign_color(letter, rightGuessString[i]);
 
-        else if (letter !== rightGuessString[i] && rightGuessString.includes(letter)) {
-            letterColor = 'yellow';
-        }
-
-        else {
-            letterColor = 'lightgrey';
-        }
         // set delay for each box
         let delay = 250 * i;
         setTimeout(()=> {
             //shade box
             box.style.backgroundColor = letterColor;
+
+            // Find the corresponding letter in the letter bank
+            const letterElement = letterBank.querySelector('#' + letter.toUpperCase());
+            
+            // If the letter is found, add the "crossed-out" class
+            if (letterElement) {
+                letterElement.classList.add('crossed-out');
+            }
         }, delay)
 
         document.getElementById('text-box').value = "";
-
     }
     if (word === rightGuessString) {
         //alert("You guessed right! Game over!")
         guessesRemaining = 0;
+        // modal popup
+        handle_endmodal();
     }
     else guessesRemaining--;
-}
-
-function clearBoard(){
-    let row = document.getElementsByClassName("letter-row")[0]
-    // for each row:
-    for (let i = 0; i < 6; i++) {
-        // for each box:
-        for (let j = 0; j < 5; j++) {
-            row.children[j].textContent = "";
-            // remove box color
-            row.children[j].style.backgroundColor = "white";
-        }
-        row = row.nextElementSibling;
-    }
 }
 
 
@@ -120,13 +151,7 @@ document.getElementById("endModal").style.display = "none";
 const submitButton = document.getElementById('submit-button');
 submitButton.addEventListener('click', function(){
     if (guessesRemaining === 0) {
-        // toggle the modal
-        document.getElementById("endModal").style.display = "flex";
-        document.getElementById("correct-answer").textContent = 
-        "The correct word was " + rightGuessString + ".";
-        
-        // need to clear the board and generate another word
-
+        handle_endmodal();
         return;
       }
 
@@ -142,23 +167,9 @@ submitButton.addEventListener('click', function(){
         }
 
         checkGuess(input);
-        /*if (input === rightGuessString) {
-            alert("You guessed right! Game over!")
-            guessesRemaining = 0;
-        } */
     }
     else {
         alert("Please enter a word with exactly 5 letters!");
         return
     }
 });
-
-//document.getElementById("playAgain").addEventListener("click", clearBoard());
-
-// clear word from text box after submitting
-
-// show correct word on board before getting the notification
-
-// if a word has a double letter, then only the first letter is shaded
-
-// add letter bank (used/unused letters)
