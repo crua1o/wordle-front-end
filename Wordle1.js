@@ -28,12 +28,15 @@ function initBoard(){
     
     for(let i = 0; i < NUMBER_OF_GUESSES; i++){
         let row = document.createElement('div'); // creates 6 rows
-        row.className = 'letter-row';
+        row.className = 'row';
+        row.id = 'row' + i;
+        // row.style.backgroundColor = '#FFD0F2'; // set background color of row
 
         for(let j = 0; j < 5; j++){
             // creates 5 divs in each row
             let box = document.createElement('div'); 
             box.className = 'letter-box';
+            box.style.backgroundColor = 'white'; // set background color of row
             row.appendChild(box);
         }
 
@@ -85,10 +88,10 @@ function assign_color(letter, correct_letter){
     let letterColor = '' // color of box
     // change box color accordingly
     if (letter === correct_letter) {
-        letterColor = 'lightgreen';
+        letterColor = '#e0218a';
     }
     else if (letter !== correct_letter && rightGuessString.includes(letter)) {
-        letterColor = 'yellow';
+        letterColor = '#f4a460';
     }
     else {
         letterColor = 'lightgrey';
@@ -102,40 +105,51 @@ function checkGuess(word){
 
     // identify which row to fill in
     console.log(guessesRemaining);
-    let row = document.getElementsByClassName("letter-row")[6 - guessesRemaining]
+    let rowIndex = 6 - guessesRemaining; // Calculate the index of the desired row
+    let rows = document.getElementsByClassName("row"); // Get all elements with the class "row"
+
+    console.log(rowIndex)
+    console.log("rows: " + rows.length)
+
+    if (rowIndex >= 0 && rowIndex < rows.length) {
+
+        console.log('here')
     
-    // fill in the boxes 
-    for(let i = 0; i < input_arr.length; i++){
-        let box = row.children[i] // box to shade
-        let letter = word[i] // letter to add to box
-        let letterColor = '' // color of box
-        const letterBank = document.getElementById('letterBank');
+        // fill in the boxes 
+        for(let i = 0; i < input_arr.length; i++){
+            let row = document.getElementById('row' + rowIndex); // row to fill in
 
-        // set row[box[i]] to input_arr[i]
-        box.textContent = letter.toUpperCase();
+            let box = row.children[i] // box to shade
+            let letter = word[i] // letter to add to box
+            let letterColor = '' // color of box
+            const letterBank = document.getElementById('letterBank');
 
-        // display the box's content
-        box.classList.add('filled-box');
+            // set row[box[i]] to input_arr[i]
+            box.textContent = letter.toUpperCase();
 
-        // change box color accordingly
-        letterColor = assign_color(letter, rightGuessString[i]);
+            // display the box's content
+            box.classList.add('filled-box');
 
-        // set delay for each box
-        let delay = 250 * i;
-        setTimeout(()=> {
-            //shade box
-            box.style.backgroundColor = letterColor;
+            // change box color accordingly
+            letterColor = assign_color(letter, rightGuessString[i]);
 
-            // Find the corresponding letter in the letter bank
-            const letterElement = letterBank.querySelector('#' + letter.toUpperCase());
-            
-            // If the letter is found, add the "crossed-out" class
-            if (letterElement) {
-                letterElement.classList.add('crossed-out');
-            }
-        }, delay)
+            // set delay for each box
+            let delay = 250 * i;
+            setTimeout(()=> {
+                //shade box
+                box.style.backgroundColor = letterColor;
 
-        document.getElementById('text-box').value = "";
+                // Find the corresponding letter in the letter bank
+                const letterElement = letterBank.querySelector('#' + letter.toUpperCase());
+                
+                // If the letter is found, add the "crossed-out" class
+                if (letterElement) {
+                    letterElement.classList.add('grayed-out');
+                }
+            }, delay)
+
+            document.getElementById('text-box').value = "";
+        }
     }
     if (word === rightGuessString) {
         //alert("You guessed right! Game over!")
@@ -162,7 +176,7 @@ submitButton.addEventListener('click', function(){
             return
         }
         if (!validWord()) {
-            alert("Invalid word! Please enter a valid word.");
+            alert("Word not in our list! Please enter a valid word.");
             return
         }
 
@@ -172,4 +186,19 @@ submitButton.addEventListener('click', function(){
         alert("Please enter a word with exactly 5 letters!");
         return
     }
+});
+
+// toggle modes
+// Get the mode toggle button and body element
+const modeToggle = document.getElementById("mode-toggle");
+const body = document.body;
+
+// TODO doesn't add the class to the game board
+
+
+// Add event listener to the mode toggle button
+modeToggle.addEventListener("click", () => {
+    // Toggle the 'light-mode' and 'dark-mode' classes on the body
+    body.classList.toggle("light-mode");
+    body.classList.toggle("dark-mode");
 });

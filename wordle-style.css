@@ -1,33 +1,33 @@
 body {
   color: black;
+  background-color: #FFD0F2;
 }
 
 /* Style the navigation bar */
 .navbar {
-    width: 100%;
-    height: 50px;
-    background-color: white;
-  }
+  width: 100%;
+  height: 50px;
+}
   
   /* Navbar links */
-  .navbar a {
-    float: left;
-    text-align: center;
-    padding: 12px;
-    padding-top: 15px;
-    color: black;
-  }
+.navbar a {
+  float: left;
+  text-align: center;
+  padding: 12px;
+  padding-top: 15px;
+  color: black;
+}
 
   
 
-.grid-container {
-  /* centering contents */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  
-  padding: 10px;
-  
+#board-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -50px; /* Adjust this value to control how much the background extends */
+  width: 50px; /* Adjust this value to control the width of the extended background */
+  height: 100%;
+  z-index: -1; /* Place the pseudo-element behind the content */
 }
 
 #text-box{
@@ -63,11 +63,9 @@ body {
 
 
 #game-board {
-  display: flex;
   align-items: center;
   flex-direction: column;
-  position: relative;
-  top: 75px;
+  background-color: #FFD0F2;
 }
 
 .letter-box {
@@ -88,10 +86,6 @@ body {
   border: 2px solid black;
 }
 
-.letter-row {
-  display: flex;
-}
-
 /* flipping card animation */
 .flipped{
   transform: rotateY(180deg);
@@ -104,12 +98,24 @@ body {
   bottom: 0;
   left: 0;
   width: 100%;
-  background-color: #f0f0f0;
+  background-color: #FFAAE7;
   padding: 10px;
   text-align: center;
 }
 
 /* used for letters already used */
-.crossed-out {
-  text-decoration: line-through;
+.grayed-out {
+  color: rgba(128, 128, 128, 0.5); /* Gray color with 50% opacity */
+}
+
+/* Define styles for light mode */
+body.light-mode {
+  background-color: #FFD0F2;
+  color: black;
+}
+
+/* Define styles for dark mode */
+body.dark-mode {
+  background-color: #C913A1;
+  color: white;
 }
